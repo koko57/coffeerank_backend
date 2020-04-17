@@ -42,6 +42,35 @@ class CoffeeTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
         self.assertTrue(data['coffee'])
+    
+    def test_edit_coffee(self):
+        coffee_to_edit = Coffee.query.order_by(Coffee.id).all()[-1]
+        coffee_id = coffee_to_edit.id
+        
+        new_coffee = {
+            'roaster': 'Johan & Nystrom'
+        }
+        
+        res = self.client().patch(f'/coffee/{1}', json=new_coffee)
+        data = json.loads(res.data)
+        
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['success'])
+        self.assertTrue(data['coffee'])
+        
+    def test_delete_coffee(self):
+        coffee_to_delete = Coffee.query.order_by(Coffee.id).all()[-1]
+        coffee_id = coffee_to_delete.id
+        
+        res = self.client().delete(f'/coffee/{coffee_id}')
+        data = json.loads(res.data)
+        
+        coffee = Coffee.query.filter_by(id=coffee_id).one_or_none()
+        print(coffee)
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['success'])
+        self.assertEqual(coffee, None)
+        
         
 if __name__ == "__main__":
     unittest.main()
