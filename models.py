@@ -20,13 +20,17 @@ def setup_db(app, database_path=database_path):
 
 class Coffee(db.Model):
     id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
     origin = Column(String)
     roaster = Column(String)
+    description = Column(String(400))
     brewing_method = Column(Integer, db.ForeignKey('method.id'))
 
-    def __init__(self, origin, roaster, brewing_method):
+    def __init__(self, name, origin, roaster, description, brewing_method):
+        self.name = name
         self.origin = origin
         self.roaster = roaster
+        self.description = description
         self.brewing_method = brewing_method
 
     def insert(self):
@@ -40,13 +44,24 @@ class Coffee(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def format(self):
+    def format_short(self):
         return {
             'id': self.id,
-            'origin': self.origin,
-            'roaster': self.roaster,  
+            'name': self.name,
+            'roaster': self.roaster,
             'brewing_method': self.brewing_method,
         }
+    
+    def format_long(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'origin': self.origin,
+            'roaster': self.roaster,
+            'description': self.description,
+            'brewing_method': self.brewing_method,
+        }
+        
 
 class Method(db.Model):
     id = Column(Integer, primary_key=True)
