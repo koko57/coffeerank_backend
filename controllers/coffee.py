@@ -1,5 +1,6 @@
 from flask import Blueprint, request, abort, jsonify
 from models import Coffee
+from auth.auth import requires_auth
 
 coffee = Blueprint('coffee', __name__)
 
@@ -10,13 +11,17 @@ def get_coffee():
 
 
 @coffee.route('/coffee/<int:coffee_id>')
-def get_coffee_details(coffee_id):
+@requires_auth('get:coffee')
+def get_coffee_details(payload, coffee_id):
     print(coffee_id)
     coffee_details = Coffee.query.filter_by(id=coffee_id).first()
     return jsonify(success=True, coffee=coffee_details.format_long())
 
+
 @coffee.route('/coffee', methods=['POST'])
-def create_coffee():
+@requires_auth('create:coffee')
+def create_coffee(payload):
+    print(payload)
     body = request.get_json()
     name = body['name']
     origin = body.get('origin', None)
@@ -31,11 +36,12 @@ def create_coffee():
     except:
         abort(500)
     
-    return jsonify(success=True, coffee=new_coffee.format())
+    return jsonify(success=True, coffee=new_coffee.format_long())
 
     
 @coffee.route('/coffee/<int:coffee_id>', methods=['PATCH'])
-def edit_coffee(coffee_id):
+@requires_auth('edit:coffee')
+def edit_coffee(payload, coffee_id):
     coffee_to_edit = Coffee.query.filter_by(id=coffee_id).first()
     body = request.get_json()
     origin = body.get('origin', None)
@@ -60,7 +66,8 @@ def edit_coffee(coffee_id):
 
 
 @coffee.route('/coffee/<int:coffee_id>', methods=['DELETE'])
-def delete_coffee(coffee_id):
+@requires_auth('delete:coffee')
+def delete_coffee(payload, coffee_id):
     coffee_to_delete = Coffee.query.filter_by(id=coffee_id).first()
     deleted_id = coffee_to_delete.id
 
