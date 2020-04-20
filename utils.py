@@ -1,6 +1,6 @@
 from math import ceil
 
-ENTRIES_PER_PAGE = 3
+ENTRIES_PER_PAGE = 10
 
 
 def paginate_results(page, results):
