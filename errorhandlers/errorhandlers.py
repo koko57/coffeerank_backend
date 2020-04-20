@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify
 from auth.auth import AuthError
+
+
 error = Blueprint('error', __name__)
 
-@error.errorhandler(422)
+@error.app_errorhandler(422)
 def unprocessable(error):
     return jsonify({
         "success": False,
@@ -11,16 +13,25 @@ def unprocessable(error):
     }), 422
 
 
-@error.errorhandler(404)
+@error.app_errorhandler(404)
 def not_found(error):
     return jsonify({
         "success": False,
         "error": 404,
         "message": "Resource not found"
     }), 404
+    
+
+@error.app_errorhandler(405)
+def not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 405,
+        "message": "Method not allowed"
+    }), 405
 
 
-@error.errorhandler(500)
+@error.app_errorhandler(500)
 def server_error(error):
     return jsonify({
         "success": False,
@@ -29,10 +40,10 @@ def server_error(error):
     }), 500
 
 
-@error.errorhandler(AuthError)
+@error.app_errorhandler(AuthError)
 def auth_error(error):
     return jsonify({
         "success": False,
         "error": error.status_code,
-        "description": error.error['description']
+        "message": error.error['description']
     }), error.status_code

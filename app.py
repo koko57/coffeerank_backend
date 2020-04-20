@@ -14,6 +14,7 @@ def create_app(test_config=None):
     app.register_blueprint(error)
     CORS(app)
     setup_db(app)
+
     return app
 
 APP = create_app()

@@ -90,7 +90,7 @@ def verify_decode_jwt(token):
                 issuer=f'https://{os.environ["AUTH0_DOMAIN"]}/'
             )
             return payload
-
+            
         except jwt.ExpiredSignatureError:
             raise AuthError({
                 'code': 'token_expired',

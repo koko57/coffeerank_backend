@@ -78,6 +78,22 @@ class Method(db.Model):
         }
 
 
+class Rating(db.Model):
+    id = Column(Integer, primary_key=True)
+    value = Column(Integer, nullable=False)
+    user_id = Column(String, nullable=False)
+    coffee_id = Column(Integer, db.ForeignKey('coffee.id'))
+
+    def __init__(self, value, user_id, coffee_id):
+        self.value = value
+        self.user_id = user_id
+        self.coffee_id = coffee_id
+        
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+
 @event.listens_for(Method.__table__, 'after_create')
 def insert_initial_values(*args, **kwargs):
     method1 = Method(name='espresso')
