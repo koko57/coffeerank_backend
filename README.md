@@ -4,13 +4,13 @@ CoffeeRank is a database of speciality coffee where logged users can rate the co
 
 To test the app use cURL or [Postman](https://www.postman.com)
 
-The app is deployed on Heroku [link]().
+The app is deployed on Heroku https://coffeerank.herokuapp.com.
 
 ## Getting Started (Locally)
 
 ### Installing Dependencies
 
-#### Python 3.7
+#### Python 3
 
 Make sure you have the latest version of python installed on your machine, to check run 
 ```
@@ -84,7 +84,7 @@ python test_app.py
 
 ## API Reference
 
-- Base URL: [link](https://fsndcapstone.herokuapp.com)
+- Base URL: https://coffeerank.herokuapp.com
 
 ### Endpoints
 
@@ -171,10 +171,11 @@ python test_app.py
 	- Request Body:  
     ```
         {
-            "name": "Arcaffe Roma",
+            "name": "Arcaffe Roma", REQUIRED!
             "origin": "Brazil",
             "roaster": "Arcaffe",
-            "brewing_method": 1 (brewing method id)
+            "brewing_method": 1 (brewing method id),
+            "description": "Soft and pleasant crema with the aroma of cocoa and caramel. Characterized by a rich, velvety body and a delicate hint of tobacco.",
         }
 
     ```
@@ -185,7 +186,7 @@ python test_app.py
         {
             "coffee": {
                 "brewing_method": 1,
-                "description": null,
+                "description": "Soft and pleasant crema with the aroma of cocoa and caramel. Characterized by a rich, velvety body and a delicate hint of tobacco.",
                 "id": 3,
                 "name": "Arcaffe Roma",
                 "origin": "Brazil",

@@ -2,7 +2,6 @@ from math import ceil
 
 ENTRIES_PER_PAGE = 10
 
-
 def paginate_results(page, results):
     start = (page - 1) * ENTRIES_PER_PAGE
     end = start + ENTRIES_PER_PAGE
